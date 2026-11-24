@@ -55,6 +55,15 @@ test("gate rejects leading and trailing whitespace", () => {
   assert.match(gateCheck(LAST_WORDS + "\n"), /single line|leading or trailing/);
 });
 
+test("gate rejects links", () => {
+  assert.match(gateCheck("see https://example.com for my last words"), /must not contain a link/);
+});
+
+test("gate rejects entries under 5 words", () => {
+  assert.match(gateCheck("Goodbye cruel world now"), /at least 5 words/);
+  assert.equal(gateCheck("One two three four five"), null);
+});
+
 test("gate rejects control characters", () => {
   assert.match(gateCheck("hello\x07world"), /control characters/);
 });

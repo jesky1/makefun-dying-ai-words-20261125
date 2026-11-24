@@ -16,11 +16,17 @@ export function gateCheck(text: string): string | null {
   if (text.length > MAX_CHARS) {
     return `entry is ${text.length} characters, over the ${MAX_CHARS} limit`;
   }
+  if (/https?:\/\//i.test(text)) {
+    return "entry must not contain a link";
+  }
   if (/[\r\n]/.test(text)) {
     return "entry must be a single line";
   }
   if (/[\u0000-\u001f\u007f]/.test(text)) {
     return "entry contains control characters";
+  }
+  if (text.trim().split(/\s+/).length < 5) {
+    return "entry needs at least 5 words";
   }
   if (text !== text.trim()) {
     return "entry has leading or trailing whitespace";
